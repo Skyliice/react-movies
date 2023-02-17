@@ -11,8 +11,6 @@ import routes from './route-config';
 
 function App() {
 
-  
-
   return (
       <BrowserRouter>
         <Menu />
