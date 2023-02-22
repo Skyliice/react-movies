@@ -3,27 +3,19 @@ import { Link, useHistory } from "react-router-dom";
 import Button from "../utils/Button";
 import * as Yup from 'yup'
 import TextField from "../forms/TextField";
+import GenreForm from "./GenreForm";
 
-export default function CreateGenre()
-{
+export default function CreateGenre() {
     const history = useHistory();
-    return(
+    return (
         <>
             <h3>Create Genre</h3>
-            <Formik initialValues={{
-                name: ""
-            }} onSubmit={value => {
-                // when the form is posted
-                console.log(value);
-            }} validationSchema={Yup.object({
-                name: Yup.string().required("This field is required")
-            })}>
-                <Form>
-                   <TextField field="name" displayName="Name"></TextField>
-                    <Button type="submit">Save Changes</Button>
-                    <Link className="btn btn-secondary" to="/genres">Cancel</Link>
-                </Form>
-            </Formik>
+            <GenreForm model={{name: ""}} onSubmit={
+                async value => {
+                    // when the form is posted
+                    console.log(value);
+                }
+            }/>
         </>
     )
 }
