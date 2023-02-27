@@ -25,6 +25,7 @@ export default function MovieForm(props: movieFormProps)
                 <TextField displayName="Trailer" field="trailer" />
                 <DateField displayName="Release Date" field="releaseDate"/>
                 <ImageField displayName="Poster" field="poster" imageURL={props.model.posterURL}/>
+                
                 <Button disabled={formikProps.isSubmitting} type="submit">Save Changes</Button>
                 <Link className="btn btn-secondary" to="/movies">Cancel</Link>
             </Form>
