@@ -1,3 +1,4 @@
+import { actorMovieDTO } from "../actors/actors.model";
 import { genreDTO } from "../genres/genres.model";
 import { movieTheaterDTO } from "../movietheaters/movieTheater.model";
 import MovieForm from "./MovieForm";
@@ -10,6 +11,11 @@ export default function EditMovie()
     const nonSelectedMovieTheaters: movieTheaterDTO[] =[{id: 1, name:"Cinema Park"}];
     const selectedMovieTheaters: movieTheaterDTO[]=[{id:2,name:"Kino-Zvezda"}];
 
+    const selectedActors: actorMovieDTO[] =[
+        { id: 1, name: "Bogdan", character: "Debil", picture: "https://pp.userapi.com/c841122/v841122176/7713e/_VP2r0E-J8I.jpg" },
+        { id: 2, name: "Vlad", character: "", picture: "https://sun9-85.userapi.com/c9817/u62741640/-6/w_6b1233d6.jpg" }
+    ]
+
     return(
         <>
             <h3>Edit Movie</h3>
@@ -20,7 +26,9 @@ export default function EditMovie()
              nonSelectedGenres={nonSelectedGenres}
              selectedGenres={selectedGenres}
              nonSelectedMovieTheaters={nonSelectedMovieTheaters}
-             selectedMovieTheaters={selectedMovieTheaters}/>
+             selectedMovieTheaters={selectedMovieTheaters}
+             selectedActors={selectedActors}
+             />
         </>
     )
 }
