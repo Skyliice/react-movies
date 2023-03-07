@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { urlGenres } from "../endpoints";
 import Button from "../utils/Button";
+import customConfirm from "../utils/customConfirm";
 import GenericList from "../utils/GenericList";
 import Pagination from "../utils/Pagination";
 import RecordsPerPageSelect from "../utils/RecordsPerPageSelect";
@@ -15,8 +16,13 @@ export default function IndexGenres() {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
+        loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, recordsPerPage]);
+
+    function loadData() {
         axios.get(urlGenres, {
-            params: {page, recordsPerPage}
+            params: { page, recordsPerPage }
         })
             .then((response: AxiosResponse<genreDTO[]>) => {
                 const totalAmountOfRecords =
@@ -24,7 +30,20 @@ export default function IndexGenres() {
                 setTotalAmountOfPages(Math.ceil(totalAmountOfRecords / recordsPerPage));
                 setGenres(response.data);
             });
-    }, [page,recordsPerPage]);
+    }
+
+    async function deleteGenre(id: number) {
+        try {
+            await axios.delete(`${urlGenres}/${id}`);
+            loadData();
+        }
+        catch (error: any) {
+            if (error && error.response) {
+                console.error(error.response.data);
+            }
+        }
+    }
+
     return (
         <>
             <h3>Genres</h3>
@@ -46,8 +65,8 @@ export default function IndexGenres() {
                             <tr key={genre.id}>
                                 <td>
                                     <Link className="btn btn-success"
-                                        to={`/genres/${genre.id}`}>Edit</Link>
-                                    <Button className="btn btn-danger">Delete</Button>
+                                        to={`/genres/edit/${genre.id}`}>Edit</Link>
+                                    <Button className="btn btn-danger" onClick={() => customConfirm((() => deleteGenre(genre.id)) )}>Delete</Button>
                                 </td>
                                 <td>
                                     {genre.name}
