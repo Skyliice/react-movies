@@ -1,18 +1,28 @@
 import { ReactElement, useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { actorMovieDTO } from "../actors/actors.model";
+import axios, { AxiosResponse } from "axios";
+import { urlActors } from "../endpoints";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 export default function TypeAheadActors(props: typeAheadActorsProps) {
 
-    const actors: actorMovieDTO[] = [
-        { id: 1, name: "Bogdan", character: "", picture: "https://pp.userapi.com/c841122/v841122176/7713e/_VP2r0E-J8I.jpg" },
-        { id: 2, name: "Vlad", character: "", picture: "https://sun9-85.userapi.com/c9817/u62741640/-6/w_6b1233d6.jpg" },
-        { id: 3, name: "Nikita", character: "", picture: "https://sun9-18.userapi.com/c9844/u62553290/-6/x_60482ff1.jpg" }
-    ];
+
 
     const selected: actorMovieDTO[] = [];
 
     const [draggedElement, setDraggedElement] = useState<actorMovieDTO | undefined>(undefined);
+    const [isLoading,setIsLoading] = useState(false);
+    const [actors,setActors] = useState<actorMovieDTO[]>([]);
+
+    function handleSearch(query: string){
+        setIsLoading(true);
+        axios.get(`${urlActors}/searchByName/${query}`)
+        .then((response: AxiosResponse<actorMovieDTO[]>) =>{
+            setActors(response.data);
+            setIsLoading(false);
+        });
+    }
 
     function handleDragStart(actor: actorMovieDTO){
         setDraggedElement(actor);
@@ -37,17 +47,18 @@ export default function TypeAheadActors(props: typeAheadActorsProps) {
 
     return (<div className="mb-3">
         <label>{props.displayName}</label>
-        <Typeahead
+        <AsyncTypeahead
             id="typeahead"
             onChange={(actors: any) => {
                 if (props.actors.findIndex(x => x.id === actors[0].id) === -1) {
                     props.onAdd([...props.actors, actors[0]]);
                 }
-                console.log(actors);
             }}
             options={actors}
             labelKey={(actor: any) => actor.name}
-            filterBy={["name"]}
+            filterBy={() => true}
+            isLoading={isLoading}
+            onSearch={handleSearch}
             placeholder="Write the name of the actor..."
             minLength={1}
             flip={true}
