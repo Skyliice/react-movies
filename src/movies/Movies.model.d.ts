@@ -5,7 +5,14 @@ import { genreDTO } from "../genres/genres.model";
 export interface movieDTO {
     id: number;
     title: string;
-    poster: string;
+    inTheaters: boolean;
+    trailer: string;
+    releaseDate?: Date;
+    summary?: string; 
+    poster?: string;
+    genres: genreDTO[];
+    movieTheaters:movieTheaterDTO[];
+    actors: actorMovieDTO[];
 }
 
 export interface movieCreationDTO{
