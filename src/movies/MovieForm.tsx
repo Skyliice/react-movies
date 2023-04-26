@@ -13,6 +13,7 @@ import { genreDTO } from "../genres/genres.model";
 import { movieTheaterDTO } from "../movietheaters/movieTheater.model";
 import TypeAheadActors from "../forms/TypeAheadActors";
 import { actorMovieDTO } from "../actors/actors.model";
+import MarkdownField from "../forms/MarkdownField";
 
 export default function MovieForm(props: movieFormProps) {
     const [selectedGenres, setSelectedGenres] = useState(mapToModel(props.selectedGenres));
@@ -50,6 +51,8 @@ export default function MovieForm(props: movieFormProps) {
                     <TextField displayName="Trailer" field="trailer" />
                     <DateField displayName="Release Date" field="releaseDate" />
                     <ImageField displayName="Poster" field="poster" imageURL={props.model.posterURL} />
+
+                    <MarkdownField displayName="Summary" field="summary" />
 
                     <MultipleSelector displayName="Genres"
                         nonSelected={nonSelectedGenres}
